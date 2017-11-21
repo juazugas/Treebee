@@ -1,0 +1,8 @@
+{
+  "name": "Treebee",
+  "version": "1.0.0",
+  "description": "Tool for query and process Elasticsearch responses.",
+  "main": "index.js",
+  "author": "juazugas <juazuri@gmail.com>",
+  "license": "MIT"
+}
