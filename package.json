@@ -4,5 +4,11 @@
   "description": "Tool for query and process Elasticsearch responses.",
   "main": "index.js",
   "author": "juazugas <juazuri@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts" : {
+    "dev" : "node server.js"
+  },
+  "devDependencies": {
+    "express": "^4.16.2"
+  }
 }
