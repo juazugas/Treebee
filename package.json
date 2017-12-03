@@ -6,7 +6,8 @@
   "author": "juazugas <juazuri@gmail.com>",
   "license": "MIT",
   "scripts" : {
-    "dev" : "node server.js"
+    "dev" : "node server.js",
+    "prototype": "node prototype/server.js"
   },
   "devDependencies": {
     "express": "^4.16.2"
