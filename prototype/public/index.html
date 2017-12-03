@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <title>Prototype for Treebee</title>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="   crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js" integrity="sha256-U//RSeH3TR3773Rk+1lAufJnRjEaG5LcdbvGV72kHEM=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/mode-json.js" crossorigin="anonymous"></script>
   <!--<script src="/lib/ace/mode-sense.js" type="text/javascript"></script> -->
@@ -61,7 +61,7 @@ footer {
 <body>
   <div id="container">
     <header>
-      <input type="text" size="40" name="server" value="" placeholder="http://...:9200"/> <button>Go</button><br/>
+      <input type="text" size="40" name="server" value="" placeholder="http://...:9200"/> <button class="action">Go</button><br/>
     </header>
     <div id="main">
     <div id="query-container">
@@ -80,6 +80,80 @@ POST /{index}/_search
     </footer>
   </div>
 <script type="text/javascript">
+var TBEditor;
+var host = function () {
+  return $('input[name=server]').val().trim();
+};
+var parseHost = function () {
+  var server = host();
+  return server.match(/^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)/);
+};
+var queryText = function () {
+  return TBEditor.query.getValue().trim();
+};
+var queryAction = function () {
+  var queryTxt = queryText();
+  return queryTxt.substring(0, queryTxt.indexOf('\n'));
+};
+var queryDSL = function () {
+  var qyAction = queryAction();
+  return queryText().substring(qyAction.length+1).trim();
+}
+var parseQuery = function () {
+  var qyAction = queryAction();
+  var qyDSL    = queryDSL();
+  if (qyAction.match(/^[ \t]*POST ?.*\/_search\/?/)) {
+    try{
+      JSON.parse(qyDSL);
+      return true;
+    } catch(e) {
+      return false;
+    }
+  }
+};
+var process = function () {
+  var procText = TBEditor.process.getValue().trim();
+  return function(response) {
+    if (null!=procText&&procText!=='') {
+      return eval(procText);
+    } else {
+      return response;
+    }
+  };
+};
+var parseProcess = function() {
+  return true;
+}
+var printResponse = function (data) {
+  var result;
+  if (data instanceof Object) {
+    result = data;
+  } else {
+    try {
+      result = JSON.parse(data);
+    } catch(e) { }
+  }
+  result = JSON.stringify(result, null, 2);
+  TBEditor.response.setValue(result);
+};
+var submitQuery = function (host, action, dsl, process) {
+  $.ajax({
+    method: 'POST',
+    url: host+action.replace('POST', '').trim(),
+    data: dsl,
+    crossDomain: true
+  })
+  .then(function(data) {
+      var result = (null!=process) ? process(data) : data;
+      printResponse(result);
+    },
+    function(xhr, textStatus) {
+      var responseText = xhr.responseText;
+      var result = (responseText) ?  responseText : textStatus;
+      printResponse(result);
+    });
+};
+
 $(document).ready(function () {
   console.log('ready');
   var editor = {};
@@ -90,6 +164,13 @@ $(document).ready(function () {
   editor.query.getSession().setMode("ace/mode/json");
   editor.process.getSession().setMode("ace/mode/javascript");
   editor.query.getSession().setMode("ace/mode/json");
+  TBEditor = editor;
+
+  $('button.action').click(function() {
+    if (parseHost() && parseQuery() && parseProcess()) {
+      submitQuery(host(), queryAction(), queryDSL(), process());
+    }
+  });
 });
 </script>
 </body>
