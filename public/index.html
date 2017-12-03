@@ -6,7 +6,10 @@
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="   crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js" integrity="sha256-U//RSeH3TR3773Rk+1lAufJnRjEaG5LcdbvGV72kHEM=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/mode-json.js" crossorigin="anonymous"></script>
+  <!--<script src="/lib/ace/mode-sense.js" type="text/javascript"></script> -->
+  <!--<script src="/lib/ace/worker-sense.js" type="text/javascript"></script>-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/mode-javascript.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/worker-javascript.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/theme-terminal.js" crossorigin="anonymous"></script>
 <style>
 #container {
@@ -62,8 +65,13 @@ footer {
     </header>
     <div id="main">
     <div id="query-container">
-      <div id="query">Place your query ....</div>
-      <div id="process">Place your evaluation ...</div>
+      <div id="query">/* Place your query. Example ....
+POST /{index}/_search
+{
+  "query" :{}
+}
+ */</div>
+      <div id="process">response.print()</div>
     </div>
     <div id="response">Waiting for response ...</div>
     </div>
@@ -81,6 +89,7 @@ $(document).ready(function () {
   editor.response.setTheme("ace/theme/terminal");
   editor.query.getSession().setMode("ace/mode/json");
   editor.process.getSession().setMode("ace/mode/javascript");
+  editor.query.getSession().setMode("ace/mode/json");
 });
 </script>
 </body>
