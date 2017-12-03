@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
+  <meta charset="UTF-8"/>
   <title>Prototype for Treebee</title>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="   crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js" integrity="sha256-U//RSeH3TR3773Rk+1lAufJnRjEaG5LcdbvGV72kHEM=" crossorigin="anonymous"></script>
@@ -9,28 +9,68 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/mode-javascript.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/theme-terminal.js" crossorigin="anonymous"></script>
 <style>
-#query, #process, #response {
-  width: 440px;
-  height:200px;
+#container {
+  position: absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-flow: column;
+}
+#container > div {
+  -webkit-transition: width 0.5s ease-out;
+  transition: width 0.5s ease-out;
+}
+header {
+  flex:0;
+  padding:0px;
+}
+#main {
+  flex:1;
+  display:flex;
+  flex-flow: row nowrap;
+  padding-right: 4px;
+}
+footer {
+  flex:0;
+  height:10px;
+}
+#query-container {
+  flex:1 1 30%;
+  display:flex;
+  flex-direction: column;
+  order:1;
+  margin-right: 4px;
 }
 #response {
-  height: 410px;
+  flex:1 3 70%;
+  order:2;
+}
+#query {
+  flex: 1 70%;
+  order:1;
+}
+#process {
+  flex: 1 30%;
+  order:2;
 }
 </style>
 </head>
 <body>
-  <h1>Treebee</h1>
-  Server:<input type="text" name="server" value="" placeholder="http://...:9200"/> <button>Go</button><br/>
-  <table>
-    <tr><td >
-        <div id="query">Place your query ....</div>
-    </td><td rowspan="2">
-      <div id="response">Waiting for response ...</div>
-    </td></tr>
-    <tr><td>
-        <div id="process">Place your evaluation ...</div>
-      </td></tr>
-  </table>
+  <div id="container">
+    <header>
+      <input type="text" size="40" name="server" value="" placeholder="http://...:9200"/> <button>Go</button><br/>
+    </header>
+    <div id="main">
+    <div id="query-container">
+      <div id="query">Place your query ....</div>
+      <div id="process">Place your evaluation ...</div>
+    </div>
+    <div id="response">Waiting for response ...</div>
+    </div>
+    <footer>
+      <p>Treebee<sup>&reg;</sup> <small>prototype</small></p>
+    </footer>
+  </div>
 <script type="text/javascript">
 $(document).ready(function () {
   console.log('ready');
