@@ -7,7 +7,15 @@
   "license": "MIT",
   "scripts": {
     "dev": "node server.js",
-    "prototype": "node prototype/server.js"
+    "prototype": "node prototype/server.js",
+    "prestart": "babel-node tools/start-message.js",
+    "start": "npm-run-all --parallel test:watch open:src lint:watch",
+    "open:src": "babel-node tools/src-server.js",
+    "lint": "node_modules/.bin/esw webpack.config.* src tools",
+    "lint:watch": "yarn run lint -- --watch",
+    "test": "mocha --compilers js:babel-core/register --reporter spec tools/test-setup.js \"test/**/*.spec.js\"",
+    "test:watch": "yarn run test -- --watch",
+    "coverage": "nyc mocha --compilers js:babel-core/register --reporter min tools/test-setup.js \"test/**/*.spec.js\""
   },
   "dependencies": {
     "babel-polyfill": "6.8.0",
