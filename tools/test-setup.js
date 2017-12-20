@@ -12,12 +12,12 @@ require.extensions['.jpg'] = function () {return null;};
 
 // Configure JSDOM and set global variables
 // to simulate a browser environment for tests.
-var jsdom = require('jsdom').JSDOM;
+var JSDOM = require('jsdom').JSDOM;
 
 var exposedProperties = ['window', 'navigator', 'document'];
 
-global.document = new jsdom('');
-global.window = document.defaultView;
+global.window =  new JSDOM('').window;
+global.document = global.window.document;
 Object.keys(document.defaultView).forEach((property) => {
   if (typeof global[property] === 'undefined') {
     exposedProperties.push(property);
