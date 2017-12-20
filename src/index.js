@@ -1,11 +1,10 @@
-import 'babel-polyfill';
 import React from 'react';
 import {render} from 'react-dom';
 import App from './components/app';
-import './styles/styles.css';
+import './styles/style.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-render(
+export default render(
   <App />,
   document.getElementById('app')
 );

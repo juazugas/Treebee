@@ -8,9 +8,9 @@
   "scripts": {
     "dev": "node server.js",
     "prototype": "node prototype/server.js",
-    "prestart": "babel-node tools/start-message.js",
+    "prestart": "babel-node tools/start-motd.js",
     "start": "npm-run-all --parallel test:watch open:src lint:watch",
-    "open:src": "babel-node tools/src-server.js",
+    "open:src": "babel-node tools/server.js",
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
     "lint:watch": "yarn run lint -- --watch",
     "test": "mocha --compilers js:babel-core/register --reporter spec tools/test-setup.js \"test/**/*.spec.js\"",
@@ -58,6 +58,7 @@
     "style-loader": "^0.19.0",
     "url-loader": "^0.6.2",
     "webpack": "^3.10.0",
-    "webpack-dev-middleware": "^1.12.2"
+    "webpack-dev-middleware": "^1.12.2",
+    "webpack-hot-middleware": "^2.21.0"
   }
 }
