@@ -5,7 +5,7 @@ import config from '../webpack.config.dev';
 
 /* eslint-disable no-console */
 
-const port = 3000;
+const SERVER_PORT = process.env.PORT || 3000;
 const app = express();
 const compiler = webpack(config);
 
@@ -20,8 +20,10 @@ app.get('*', function(req, res) {
   res.sendFile(path.join( __dirname, '../src/index.html'));
 });
 
-app.listen(port, function(err) {
+app.listen(SERVER_PORT, function(err) {
   if (err) {
     console.log(err);
+  } else {
+    console.log(`server started at port ${SERVER_PORT}`);
   }
 });
