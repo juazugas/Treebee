@@ -137,11 +137,20 @@ var printResponse = function (data) {
   TBEditor.response.setValue(result);
 };
 var submitQuery = function (host, action, dsl, process) {
-  $.ajax({
+  var query = {
     method: 'POST',
     url: host+action.replace('POST', '').trim(),
-    data: dsl,
-    crossDomain: true
+    data: dsl
+  };
+  console.log("querying "+JSON.stringify(query));
+  $.ajax({
+    method: 'POST',
+    url: '/api/query',
+    data: JSON.stringify(query),
+    contentType: 'application/json',
+    processData: false
+    /*,
+    crossDomain: true*/
   })
   .then(function(data) {
       var result = (null!=process) ? process(data) : data;
