@@ -1,16 +1,16 @@
 import expect from 'expect';
 import React from 'react';
 import {mount, shallow} from 'enzyme';
-import App from '../../src/components/app';
+import TBApp from '../../src/components/app';
 
 function setup() {
-  return shallow(<App></App>);
+  return shallow(<TBApp></TBApp>);
 }
 
-describe('App', () => {
+describe('TBApp', () => {
   it('should render header', () => {
     const wrapper = setup();
-    expect(wrapper.find('Header').length).toBe(1);
+    expect(wrapper.find('TBHeader').length).toBe(1);
   });
 
 });

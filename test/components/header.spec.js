@@ -1,13 +1,13 @@
 import expect from 'expect';
 import React from 'react';
 import {mount, shallow} from 'enzyme';
-import Header from '../../src/components/header';
+import TBHeader from '../../src/components/header';
 
 function setup() {
-  return shallow(<Header></Header>);
+  return shallow(<TBHeader />);
 }
 
-describe('Header', () => {
+describe('TBHeader', () => {
   it('should render server input', () => {
     const wrapper = setup();
     expect(wrapper.find('input').length).toBe(1);

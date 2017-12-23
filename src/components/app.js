@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import Header from './header';
+import TBHeader from './header';
 
-export default class App extends Component {
+export default class TBApp extends Component {
   render () {
     return (
       <div className="container-fluid">
-        <Header />
+        <TBHeader />
       </div>
     );
   }
