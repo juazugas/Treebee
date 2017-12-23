@@ -18,7 +18,7 @@ export default class TBHeader extends Component {
 
   render() {
     return (
-      <header>
+      <header className="row">
         <input type="text" size="40" name="server"
                value={this.state.server}
                onChange={this.onServerChange}

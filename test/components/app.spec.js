@@ -13,4 +13,9 @@ describe('TBApp', () => {
     expect(wrapper.find('TBHeader').length).toBe(1);
   });
 
+  it('should render body', () => {
+    const wrapper = setup();
+    expect(wrapper.find('TBBody').exists()).toBeTruthy();
+  });
+
 });
