@@ -14,4 +14,9 @@ describe('TBQueryProcess', () => {
     expect(process.first().exists()).toBeTruthy();
   });
 
+  it('should render Ace editor', () => {
+    const editor = process.childAt(0);
+    expect(editor.text()).toEqual('<ReactAce />');
+  });
+
 });

@@ -13,4 +13,10 @@ describe('TBResult', () => {
   it('should render a div', () => {
     expect(result.first().exists()).toBeTruthy();
   });
+
+  it('should render Ace editor', () => {
+    const editor = result.childAt(0);
+    expect(editor.text()).toEqual('<ReactAce />');
+  });
+
 });
