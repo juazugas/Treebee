@@ -13,4 +13,19 @@ describe('TBBody', () => {
     expect(wrapper.first().props().className).toEqual('row');
   });
 
+  it('should render the query editor', () => {
+    const wrapper = setup();
+    expect(wrapper.find('TBQuery').exists()).toBeTruthy();
+  });
+
+  it('should render the process editor', () => {
+    const wrapper = setup();
+    expect(wrapper.find('TBQueryProcess').exists()).toBeTruthy();
+  });
+
+  it('should render the process editor', () => {
+    const wrapper = setup();
+    expect(wrapper.find('TBResult').exists()).toBeTruthy();
+  });
+
 });
