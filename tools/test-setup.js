@@ -21,7 +21,7 @@ var JSDOM = require('jsdom').JSDOM;
 
 var exposedProperties = ['window', 'navigator', 'document'];
 
-global.window =  new JSDOM('').window;
+global.window =  new JSDOM('<html><body><div id="app"></div></body></html>').window;
 global.document = global.window.document;
 Object.keys(document.defaultView).forEach((property) => {
   if (typeof global[property] === 'undefined') {
