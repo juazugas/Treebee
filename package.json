@@ -18,6 +18,7 @@
     "coverage": "nyc mocha --compilers js:babel-core/register --reporter min tools/test-setup.js \"test/**/*.spec.js\""
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "babel-polyfill": "6.8.0",
     "bootstrap": "3.3.7",
     "brace": "^0.11.0",
