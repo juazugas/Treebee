@@ -6,11 +6,6 @@ import TBResult from './result';
 
 const TBBody = (props) => {
   const {retrieveQuery,retrieveProcess,result} = props;
-  const propTypes = {
-    retrieveQuery: PropTypes.func,
-    retrieveProcess: PropTypes.func,
-    result: PropTypes.string,
-  };
   return (
       <div className="row">
         <div className="col-md-4">
@@ -25,6 +20,11 @@ const TBBody = (props) => {
         </div>
       </div>
   );
+};
+TBBody.propTypes = {
+  retrieveQuery: PropTypes.func,
+  retrieveProcess: PropTypes.func,
+  result: PropTypes.string,
 };
 
 export default TBBody;

@@ -17,7 +17,9 @@ class TBApp extends Component {
   }
 
   performQuery(server) {
+    /*  eslint-disable no-console */
     console.log(`performQuery to ${server} ...`);
+    /*  eslint-enable no-console */
     this.setState({
       result : 'performing query ...'
     });

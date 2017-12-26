@@ -46,6 +46,6 @@ class TBQuery extends Component {
 TBQuery.propTypes = {
   editorOptions: PropTypes.object,
   retrieveQuery: PropTypes.func.isRequired
-}
+};
 
 export default TBQuery;

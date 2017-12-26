@@ -15,7 +15,7 @@
     "lint:watch": "yarn run lint -- --watch",
     "test": "mocha --require babel-core/register --reporter spec tools/test-setup.js \"test/**/*.spec.js\"",
     "test:watch": "yarn run test -- --watch",
-    "coverage": "nyc mocha --compilers js:babel-core/register --reporter min tools/test-setup.js \"test/**/*.spec.js\""
+    "coverage": "nyc yarn test -- --reporter min --exit"
   },
   "dependencies": {
     "axios": "^0.17.1",

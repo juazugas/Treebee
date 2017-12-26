@@ -45,6 +45,7 @@ export default class TBRequest {
 
   parseHost (host = '') {
     let server = host.trim();
+    /* eslint-disable no-useless-escape*/
     if (server.match(/^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)/)) {
       this.host = server;
       return true;
@@ -64,7 +65,9 @@ export default class TBRequest {
           JSON.parse(this.queryDSL);
         }
         return true;
-      } catch(e) {}
+      } catch(e) {
+        this.queryDSL = '';
+      }
     }
     this.errorMessage = `invalid query ${query}`;
     return false;
@@ -90,9 +93,8 @@ export default class TBRequest {
             data: this.printResponse(result)
           });
         })
-        .catch((status, data) => {
-          console.log(status);
-          reject(status + '-' + data);
+        .catch((error) => {
+          reject(error);
         });
     });
   }
