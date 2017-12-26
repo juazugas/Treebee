@@ -1,6 +1,7 @@
 import expect from 'expect';
 import React from 'react';
 import {mount, shallow} from 'enzyme';
+import moxios from 'moxios';
 import TBApp from '../../src/components/app';
 
 function setup(props={}) {
@@ -52,12 +53,33 @@ describe('TBApp', () => {
 
   it('should perform query', (done) => {
     expect(app.state().result).toEqual('');
-    app.instance().performQuery('server');
+    app.instance().retrieveQuery('GET /_search\n{}');
+    app.instance().performQuery('http://127.0.0.1:9200')
     expect(app.state().result).toEqual('performing query ...');
-    setTimeout(() => {
-      expect(app.state().result).toEqual('performed query.');
-      done();
-    }, 1600);
+    moxios.wait(() => {
+      let request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: 'performed query.'
+      })
+      .then(response => {
+        expect(response).toBeDefined();
+        expect(app.state().result).toEqual('performed query.');
+        done();
+      })
+      .catch(error => {
+        expect(error).toBeUndefined();
+        done();
+      })
+    });
+  });
+
+  beforeEach(() => {
+    moxios.install();
+  });
+
+  afterEach(() => {
+    moxios.uninstall();
   });
 
 });

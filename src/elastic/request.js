@@ -57,7 +57,7 @@ export default class TBRequest {
 
   parseQuery (query = '') {
     let queryText = query.trim();
-    if (queryText.match(/^[ \t]*(POST|GET) ?.*\/_search\/?/)) {
+    if (queryText.match(/^[ \t]*(POST|GET) ?.*\/?_search\/?/)) {
       this.queryAction = queryText.substring(0, queryText.indexOf('\n'));
       try {
         this.queryDSL = queryText.substring(this.queryAction.length+1).trim();
@@ -88,7 +88,7 @@ export default class TBRequest {
       axios.post('/api/query', query)
         .then((response) => {
           let {data} = response;
-          let result = (null!=this.process) ? this.processResponse(data) : data;
+          let result = (null!=this.process&&''!==this.process) ? this.processResponse(data) : data;
           return resolve({
             data: this.printResponse(result)
           });

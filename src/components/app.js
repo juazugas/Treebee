@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import TBRequest from '../elastic/request';
 import TBHeader from './header';
 import TBBody from './body';
 
@@ -17,17 +18,23 @@ class TBApp extends Component {
   }
 
   performQuery(server) {
-    /*  eslint-disable no-console */
-    console.log(`performQuery to ${server} ...`);
-    /*  eslint-enable no-console */
+    let {query, process} = this.state;
+    let request = new TBRequest();
+    request.fetch(server, query, process)
+      .then(response => {
+        this.setState({
+          result: response.data
+        });
+      })
+      .catch(error => {
+        this.setState({
+          result: JSON.stringify(error, null, 2)
+        });
+      });
+
     this.setState({
       result : 'performing query ...'
     });
-    setTimeout(() => {
-      this.setState({
-        result: 'performed query.'
-      });
-    }, 1500);
   }
 
   retrieveQuery (query) {
