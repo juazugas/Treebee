@@ -5,7 +5,7 @@ import axios from 'axios';
   Perform queries to Elastic and processes the response.
 
   usage :
-    Request request = new Request();
+    var request = new TBRequest();
     request.fetch('http://localhost:9200',
           query, // POST /index/_search..{...}
           process)
@@ -18,7 +18,7 @@ import axios from 'axios';
         }
       });
  */
-export default class Request {
+export default class TBRequest {
 
   constructor(opts = {}) {
     this.options = opts;
@@ -76,11 +76,49 @@ export default class Request {
   }
 
   submitQuery () {
-    return new Promise((resolve) => setTimeout(() => {
-      resolve({
-        data: 'performed query.'
-      });
-    },500));
+    let query = {
+      method: 'POST',
+      url: this.host+this.queryAction.replace(/^(POST|GET)/, '').trim(),
+      data: this.queryDSL
+    };
+    return new Promise((resolve, reject) => {
+      axios.post('/api/query', query)
+        .then((response) => {
+          let {data} = response;
+          let result = (null!=this.process) ? this.processResponse(data) : data;
+          return resolve({
+            data: this.printResponse(result)
+          });
+        })
+        .catch((status, data) => {
+          console.log(status);
+          reject(status + '-' + data);
+        });
+    });
+  }
+
+  processResponse (response) {
+    if (null!==this.process && this.process!=='') {
+      return eval(this.process);
+    } else {
+      return response;
+    }
+  }
+
+  printResponse (data) {
+    let result;
+    if (!(data instanceof Object)) {
+      try {
+        result = JSON.parse(data);
+        result = JSON.stringify(result,null,2);
+      } catch (e) {
+        result = data;
+      }
+    } else {
+      result = data;
+      result = JSON.stringify(result,null,2);
+    }
+    return result;
   }
 
 }
