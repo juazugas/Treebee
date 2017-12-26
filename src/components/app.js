@@ -47,8 +47,6 @@ class TBApp extends Component {
       <div className="container-fluid">
         <TBHeader
         performQuery={this.performQuery}
-        query={query}
-        process={process}
         />
         <TBBody {...retrieve} />
       </div>
