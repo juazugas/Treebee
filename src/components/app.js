@@ -29,17 +29,11 @@ class TBApp extends Component {
   }
 
   retrieveQuery (query) {
-    console.log(`retrieving query ${query} ...`);
-    this.setState({
-      query
-    });
+    this.setState({ query });
   }
 
   retrieveProcess (process) {
-    console.log(`retrieving process ${process} ...`);
-    this.setState({
-        process
-    });
+    this.setState({ process });
   }
 
   render () {

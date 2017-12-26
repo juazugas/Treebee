@@ -27,13 +27,13 @@ class TBQueryProcess extends Component {
     return (
       <div className="row">
         <AceEditor
-          mode="javascript"
-          theme="github"
-          name="tb-process"
-          value={this.state.value}
-          onChange={this.onChangeProcess}
-          width="100%"
-          setOptions={options}
+        mode="javascript"
+        theme="github"
+        name="tb-process"
+        value={this.state.value}
+        onChange={this.onChangeProcess}
+        width="100%"
+        editorProps={options}
         />
       </div>
     );

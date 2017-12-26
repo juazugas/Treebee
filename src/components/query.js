@@ -36,7 +36,7 @@ class TBQuery extends Component {
         value={this.state.value}
         width="100%"
         onChange={this.onChangeQuery}
-        setOptions={options}
+        editorProps={options}
         />
       </div>
     );
