@@ -13,7 +13,7 @@ Tool for query and process Elasticsearch responses.
   
 - React app 
 
-- Entry point ./src/index.js
+- Application entry point ./src/index.js
 
 - Execute yarn start 
   Open http://localhost:3000 in your favourite browser and enter the query and the post-process code.
