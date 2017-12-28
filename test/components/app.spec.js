@@ -11,9 +11,10 @@ function setup(props={}) {
 describe('TBApp', () => {
 
   let app;
-  let retrieveQuery = (q) => {};
+  let retrieveQuery =  (q) => {};
+  let retrieveProcess = (p) => {};
   beforeEach(() => {
-    app = setup({retrieveQuery});
+    app = setup({retrieveQuery, retrieveProcess});
   });
 
   it('should render header', () => {
@@ -25,29 +26,23 @@ describe('TBApp', () => {
   });
 
   it('should keep state', () => {
-    expect(app.state().process).toBeDefined();
     expect(app.state().result).toBeDefined();
   });
 
   it('should pass handlers', () => {
     expect(app.find('TBHeader').props().performQuery).toEqual(app.instance().performQuery);
     expect(app.find('TBBody').props().retrieveQuery).toEqual(app.instance().props.retrieveQuery);
-    expect(app.find('TBBody').props().retrieveProcess).toEqual(app.instance().retrieveProcess);
+    expect(app.find('TBBody').props().retrieveProcess).toEqual(app.instance().props.retrieveProcess);
   });
 
   it('should pass result', () => {
     expect(app.find('TBBody').props().result).toEqual(app.state().result);
   });
 
-  it('should update process state', () => {
-    expect(app.state().process).toEqual('');
-    app.instance().retrieveProcess('p');
-    expect(app.state().process).toEqual('p');
-  });
-
   it('should perform query', (done) => {
     let query = 'GET /_search\n{}';
-    app = setup({retrieveQuery, query});
+    let process = 'response';
+    app = setup({retrieveQuery, retrieveProcess, query, process});
     expect(app.state().result).toEqual('');
     app.instance().performQuery('http://127.0.0.1:9200')
     expect(app.state().result).toEqual('performing query ...');

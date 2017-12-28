@@ -7,7 +7,15 @@ describe('actions/index', () => {
     expect(actions.UPDATE_QUERY).toBeDefined();
   });
 
+  it('should export UPDATE_PROCESS', () => {
+    expect(actions.UPDATE_PROCESS).toBeDefined();
+  });
+
   it('should export updateQuery action', () => {
     expect(actions.updateQuery).toBeDefined();
+  });
+
+  it('should export updateProcess action', () => {
+    expect(actions.updateProcess).toBeDefined();
   });
 });
