@@ -11,7 +11,7 @@ describe('reducers/query', () => {
 
   it('should return empty state when no defined type and empty state', () => {
     const reduction = queryReducer(undefined, {type:'undef'});
-    expect(reduction).toEqual(null);
+    expect(reduction).toEqual('');
   });
 
   it('should return actual state when no defined type', () => {
