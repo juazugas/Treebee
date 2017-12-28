@@ -1,4 +1,4 @@
-import {UPDATE_QUERY} from './types';
+import { UPDATE_QUERY } from './types';
 
 export function updateQuery (query) {
   return {
