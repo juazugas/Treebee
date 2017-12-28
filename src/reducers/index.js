@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-// import queryReducer from './query';
+import queryReducer from './query';
 
 const rootReducer = combineReducers({
-  // query: queryReducer
+  query: queryReducer
 });
 
 export default rootReducer;

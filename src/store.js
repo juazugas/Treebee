@@ -1,6 +1,6 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
-import rootReducer from './reducers'
+import rootReducer from './reducers';
 
 const initialState = {};
 const enhancers = [];

@@ -2,7 +2,7 @@ import expect from 'expect';
 import React from 'react';
 import {mount, shallow} from 'enzyme';
 import moxios from 'moxios';
-import TBApp from '../../src/components/app';
+import { TBApp } from '../../src/components/app';
 
 function setup(props={}) {
   return shallow(<TBApp {...props} />);
@@ -11,8 +11,9 @@ function setup(props={}) {
 describe('TBApp', () => {
 
   let app;
+  let retrieveQuery = (q) => {};
   beforeEach(() => {
-    app = setup();
+    app = setup({retrieveQuery});
   });
 
   it('should render header', () => {
@@ -24,25 +25,18 @@ describe('TBApp', () => {
   });
 
   it('should keep state', () => {
-    expect(app.state().query).toBeDefined();
     expect(app.state().process).toBeDefined();
     expect(app.state().result).toBeDefined();
   });
 
   it('should pass handlers', () => {
     expect(app.find('TBHeader').props().performQuery).toEqual(app.instance().performQuery);
-    expect(app.find('TBBody').props().retrieveQuery).toEqual(app.instance().retrieveQuery);
+    expect(app.find('TBBody').props().retrieveQuery).toEqual(app.instance().props.retrieveQuery);
     expect(app.find('TBBody').props().retrieveProcess).toEqual(app.instance().retrieveProcess);
   });
 
   it('should pass result', () => {
     expect(app.find('TBBody').props().result).toEqual(app.state().result);
-  });
-
-  it('should update query state', () => {
-    expect(app.state().query).toEqual('');
-    app.instance().retrieveQuery('q');
-    expect(app.state().query).toEqual('q');
   });
 
   it('should update process state', () => {
@@ -52,8 +46,9 @@ describe('TBApp', () => {
   });
 
   it('should perform query', (done) => {
+    let query = 'GET /_search\n{}';
+    app = setup({retrieveQuery, query});
     expect(app.state().result).toEqual('');
-    app.instance().retrieveQuery('GET /_search\n{}');
     app.instance().performQuery('http://127.0.0.1:9200')
     expect(app.state().result).toEqual('performing query ...');
     moxios.wait(() => {
