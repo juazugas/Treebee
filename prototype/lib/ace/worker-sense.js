@@ -1,6 +1,12 @@
 "no use strict";
 
-var console = {
+if(!window) {
+  var window = {
+  };
+}
+
+var console = window.console || function() {
+  return {
     log: function () {
         var msgs = Array.prototype.slice.call(arguments, 0);
         postMessage({type: "log", data: msgs});
@@ -9,10 +15,12 @@ var console = {
         var msgs = Array.prototype.slice.call(arguments, 0);
         postMessage({type: "log", data: msgs});
     }
+  };
 };
-var window = {
-    console: console
-};
+
+if(!window.console) {
+  window.console = console;
+}
 
 var normalizeModule = function (parentId, moduleName) {
     // normalize plugin requires
@@ -2017,11 +2025,40 @@ define('ace/mode/sense/sense_parse', ['require', 'exports', 'module' ], function
             at = newAt + 1;
         },
 
+        scanComment = function (at) {
+          var newAt = at,
+              inComment = false,
+              ch = text.charAt(at),
+              nxCh = text.charAt(at+1);
+          if (ch === '/' && nxCh === '*') {
+            inComment = true;
+            newAt += 2;
+            while (inComment) {
+              ch = text.charAt(newAt),
+              nxCh = text.charAt(newAt+1);
+              if (ch==='*' && nxCh==='/') {
+                iComment= false;
+                newAt += 2;
+              } else {
+                newAt++;
+              }
+            }
+          }
+          return newAt;
+        },
+
         next = function (c) {
+
+            var newAt = scanComment(at);
+            if (newAt>at) {
+              at = newAt;
+              ch = text.charAt(at);
+            }
 
             if (c && c !== ch) {
                 error("Expected '" + c + "' instead of '" + ch + "'");
             }
+
 
             ch = text.charAt(at);
             at += 1;

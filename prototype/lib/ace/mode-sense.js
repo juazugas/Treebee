@@ -8,117 +8,7 @@ ace.define('ace/mode/sense', ['require', 'exports', 'module' , 'ace/lib/oop', 'a
    var CstyleBehaviour = require("./behaviour/cstyle").CstyleBehaviour;
    var CStyleFoldMode = require("./folding/cstyle").FoldMode;
    var WorkerClient = require("../worker/worker_client").WorkerClient;
-
-
-   var Tokenizer = function (rules, flag) {
-      this.constructor(rules, flag);
-   };
-
-
-   (function () {
-      this.constructor = require("../tokenizer").Tokenizer;
-      this.prototype = this.constructor.prototype;
-      this.getLineTokens = function (line, startState) {
-         var currentState = startState || { name: "start"};
-         var state = this.rules[currentState.name];
-         var mapping = this.matchMappings[currentState.name];
-         var re = this.regExps[currentState.name];
-         re.lastIndex = 0;
-
-         var match, tokens = [];
-
-         var lastIndex = 0;
-
-         var token = {
-            type: null,
-            value: ""
-         };
-
-         while (match = re.exec(line)) {
-            var type = "text";
-            var rule = null;
-            var value = [match[0]];
-
-            for (var i = 0; i < match.length - 2; i++) {
-               if (match[i + 1] === undefined)
-                  continue;
-
-               rule = state[mapping[i].rule];
-
-               if (mapping[i].len > 1)
-                  value = match.slice(i + 2, i + 1 + mapping[i].len);
-               if (typeof rule.token == "function")
-                  type = rule.token.apply(this, value);
-               else
-                  type = rule.token;
-
-               var next = rule.next;
-               if (typeof next == "function") {
-                  next = next.call(this, currentState, type, value);
-               }
-               if (typeof next == "string") next = { name: next };
-
-               if (next) {
-                  currentState = next;
-                  state = this.rules[currentState.name];
-                  mapping = this.matchMappings[currentState.name];
-                  lastIndex = re.lastIndex;
-
-                  re = this.regExps[currentState.name];
-
-                  if (re === undefined) {
-                     throw new Error("You indicated a state of " + next + " to go to, but it doesn't exist!");
-                  }
-
-                  re.lastIndex = lastIndex;
-               }
-               break;
-            }
-
-            if (value[0]) {
-               if (typeof type == "string") {
-                  value = [value.join("")];
-                  type = [type];
-               }
-               for (var i = 0; i < value.length; i++) {
-                  if (!value[i])
-                     continue;
-
-                  if ((!rule || rule.merge || type[i] === "text") && token.type === type[i]) {
-                     token.value += value[i];
-                  } else {
-                     if (token.type)
-                        tokens.push(token);
-
-                     token = {
-                        type: type[i],
-                        value: value[i]
-                     };
-                  }
-               }
-            }
-
-            if (lastIndex == line.length)
-               break;
-
-            lastIndex = re.lastIndex;
-         }
-
-         if (token.type)
-            tokens.push(token);
-
-         return {
-            tokens: tokens,
-            state: currentState
-         };
-
-      };
-
-      return this;
-
-   }).call(Tokenizer.prototype);
-
-
+   var Tokenizer = require("../tokenizer").Tokenizer;
    var Mode = function () {
       this.$tokenizer = new Tokenizer(new HighlightRules().getRules());
       this.$outdent = new MatchingBraceOutdent();
@@ -172,8 +62,60 @@ ace.define('ace/mode/sense', ['require', 'exports', 'module' , 'ace/lib/oop', 'a
    exports.Mode = Mode;
 });
 
-ace.define('ace/mode/sense_json_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text_highlight_rules'], function (require, exports, module) {
+/**
+ * see https://github.com/ajaxorg/ace/blob/master/lib/ace/mode/doc_comment_highlight_rules.js
+ */
+ace.define('ace/mode/doc_comment_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text_highlight_rules' ], function(require, exports, module) {
+"use strict";
 
+var oop = require("../lib/oop");
+var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
+
+var DocCommentHighlightRules = function() {
+    this.$rules = {
+        "start" : [ {
+            token : "comment.doc.tag",
+            regex : "@[\\w\\d_]+" // TODO: fix email addresses
+        },
+        DocCommentHighlightRules.getTagRule(),
+        {
+            defaultToken : "comment.doc",
+            caseInsensitive: true
+        }]
+    };
+};
+
+oop.inherits(DocCommentHighlightRules, TextHighlightRules);
+
+DocCommentHighlightRules.getTagRule = function(start) {
+    return {
+        token : "comment.doc.tag.storage.type",
+        regex : "\\b(?:TODO|FIXME|XXX|HACK)\\b"
+    };
+};
+
+DocCommentHighlightRules.getStartRule = function(start) {
+    return {
+        token : "comment.doc", // doc comment
+        regex : "\\/\\*(?=\\*)",
+        next  : start
+    };
+};
+
+DocCommentHighlightRules.getEndRule = function (start) {
+    return {
+        token : "comment.doc", // closing comment
+        regex : "\\*\\/",
+        next  : start
+    };
+};
+
+
+exports.DocCommentHighlightRules = DocCommentHighlightRules;
+
+});
+
+ace.define('ace/mode/sense_json_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text_highlight_rules', 'ace/mode/doc_comment_highlight_rules'], function (require, exports, module) {
 
    var oop = require("../lib/oop");
    var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
@@ -191,6 +133,16 @@ ace.define('ace/mode/sense_json_highlight_rules', ['require', 'exports', 'module
             { token: tokens.concat(["whitespace"]), regex: reg + "(\\s*)$", next: nextIfEOL },
             { token: tokens, regex: reg, next: normalNext }
          ];
+      }
+
+      function scopeKeep (next) {
+        return function (state) {
+          state = { name: next, depth: state.depth };
+          if (!state.depth) {
+             state.depth = 0;
+          }
+          return state;
+        }
       }
 
       function scopeIncrement(next) {
@@ -224,7 +176,7 @@ ace.define('ace/mode/sense_json_highlight_rules', ['require', 'exports', 'module
       // regexp must not have capturing parentheses. Use (?:) instead.
       // regexps are ordered -> the first match is used
       this.$rules = {
-        "start": mergeTokens([
+         "start": mergeTokens([
             { token: "paren.lparen", regex: "{", next: scopeIncrement("json") },
          ],
             addEOL(["method"], /([a-zA-Z]+)/, "start", "method_sep")
@@ -235,10 +187,16 @@ ace.define('ace/mode/sense_json_highlight_rules', ['require', 'exports', 'module
                   regex: "\\s+"
                },
                {
+                   token : "comment", // multi line comment
+                   regex : "\\/\\*",
+                   next : scopeKeep("comment")
+               },
+               {
                   token: "text",
                   regex: ".+?"
                }
             ]),
+
          "method_sep": mergeTokens(
             addEOL(["whitespace", "url.slash"], /(\s+)(\/)/, "start", "indices"),
             addEOL(["whitespace"], /(\s+)/, "start", "indices")
@@ -275,9 +233,28 @@ ace.define('ace/mode/sense_json_highlight_rules', ['require', 'exports', 'module
             addEOL(["url.param"], /([^&=]+)/, "start"),
             addEOL(["url.amp"], /(&)/, "start")
          ),
-
-
+         "comment" : [
+           {
+               token : "comment", // closing comment
+               regex : "\\*\\/",
+               next : scopeKeep("json")
+           },
+           {
+              token: "comment",
+              regex: ".+?"
+           }
+         ],
          "json": [
+            {
+               token : "comment", // multi line comment
+               regex : "\\/\\*",
+               next : scopeKeep("comment")
+            },
+            {
+                token : "comment", // closing comment
+                regex : "\\*\\/",
+                next: scopeKeep("json"),
+            },
             {
                token: "variable", // single line
                regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]\\s*(?=:)'
@@ -360,7 +337,7 @@ ace.define('ace/mode/sense_json_highlight_rules', ['require', 'exports', 'module
       }
    };
 
-   oop.inherits(SenseJsonHighlightRules, TextHighlightRules);
+   oop.inherits(SenseJsonHighlightRules, DocCommentHighlightRules, TextHighlightRules);
 
    exports.SenseJsonHighlightRules = SenseJsonHighlightRules;
 
