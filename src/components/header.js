@@ -25,14 +25,15 @@ class TBHeader extends Component {
 
   render() {
     return (
-      <header className="row">
+      <header className="tb__header">
         <input type="text" size="40" name="server"
         value={this.state.server}
         onChange={this.onServerChange}
-               placeholder="http://...:9200" className="input-sm" />
+        placeholder="http://...:9200"
+        className="tb__input server" />
         <button
         onClick={this.handleClick}
-          className="btn btn-sm action">
+          className="tb__button action">
           Go
         </button>
       </header>

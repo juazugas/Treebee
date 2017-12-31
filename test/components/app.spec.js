@@ -21,6 +21,11 @@ describe('TBApp', () => {
     expect(app.find('TBHeader').length).toBe(1);
   });
 
+  it('should render footer', () => {
+    expect(app.find('TBFooter').length).toBe(1);
+  });
+
+
   it('should render body', () => {
     expect(app.find('TBBody').exists()).toBeTruthy();
   });

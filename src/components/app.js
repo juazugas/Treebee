@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { updateQuery, updateProcess, performQuery } from '../actions';
 import TBRequest from '../elastic/request';
 import TBHeader from './header';
+import TBFooter from './footer';
 import TBBody from './body';
 
 export class TBApp extends Component {
@@ -25,11 +26,12 @@ export class TBApp extends Component {
       result: this.props.result
     };
     return (
-      <div className="container-fluid">
+      <div className="tb__container">
         <TBHeader
         performQuery={this.performQuery}
         />
         <TBBody {...retrieve} />
+        <TBFooter />
       </div>
     );
   }

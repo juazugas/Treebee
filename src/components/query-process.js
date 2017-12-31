@@ -25,7 +25,7 @@ class TBQueryProcess extends Component {
       showLineNumbers: true,
     }, this.state.editorOptions);
     return (
-      <div className="row">
+      <div className="tb__editor process">
         <AceEditor
         mode="javascript"
         theme="github"
@@ -33,6 +33,10 @@ class TBQueryProcess extends Component {
         value={this.state.value}
         onChange={this.onChangeProcess}
         width="100%"
+        height="100%"
+        showPrintMargin
+        showGutter
+        highlightActiveLine
         editorProps={options}
         />
       </div>

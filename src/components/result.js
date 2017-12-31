@@ -12,7 +12,7 @@ const TBResult = (props = {}) => {
   }, editorOptions);
 
   return (
-    <div className="row">
+    <div className="tb__editor response">
       <AceEditor
       mode="text"
       theme="terminal"
@@ -20,7 +20,7 @@ const TBResult = (props = {}) => {
       readOnly
       value={result}
       width="100%"
-      height="600px"
+      height="100%"
       editorProps={options}
       />
     </div>

@@ -7,18 +7,18 @@ import TBResult from './result';
 const TBBody = (props) => {
   const {retrieveQuery,retrieveProcess,result} = props;
   return (
-      <div className="row">
-        <div className="col-md-4">
+      <section className="tb__main">
+        <div className="tb__container-query">
           <TBQuery
           retrieveQuery={retrieveQuery}/>
           <TBQueryProcess
           retrieveProcess={retrieveProcess}/>
         </div>
-        <div className="col-md-8">
+        <div className="tb__container-response">
           <TBResult
           result={result}/>
         </div>
-      </div>
+      </section>
   );
 };
 TBBody.propTypes = {

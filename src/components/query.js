@@ -28,13 +28,17 @@ class TBQuery extends Component {
       showLineNumbers: true
     }, this.state.editorOptions);
     return (
-      <div className="row">
+      <div className="tb__editor query">
         <AceEditor
         mode="json"
         theme="github"
         name="tb-query"
         value={this.state.value}
         width="100%"
+        height="100%"
+        showPrintMargin
+        showGutter
+        highlightActiveLine
         onChange={this.onChangeQuery}
         editorProps={options}
         />

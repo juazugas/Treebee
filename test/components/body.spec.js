@@ -10,7 +10,7 @@ function setup(props = {}) {
 describe('TBBody', () => {
   it('should render a new row', () => {
     const body = setup();
-    expect(body.first().props().className).toEqual('row');
+    expect(body.first().props().className).toEqual('tb__main');
   });
 
   it('should render the query editor', () => {
