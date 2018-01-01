@@ -14,7 +14,7 @@ html,body {
   flex-flow: column;
   padding-left:2px;
 }
-.tb__container > div {
+.tb__container div {
   -webkit-transition: width 0.5s ease-out;
   transition: width 0.5s ease-out;
 }
