@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
-import 'brace/mode/json';
+// import 'brace/mode/json';
+import '../editor/mode-sense';
 import 'brace/theme/github';
 
 class TBQuery extends Component {
@@ -30,7 +31,7 @@ class TBQuery extends Component {
     return (
       <div className="tb__editor query">
         <AceEditor
-        mode="json"
+        mode="sense"
         theme="github"
         name="tb-query"
         value={this.state.value}
