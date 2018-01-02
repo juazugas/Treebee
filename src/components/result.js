@@ -2,10 +2,16 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 import 'brace/theme/terminal';
+import 'brace/mode/json';
 import 'brace/mode/text';
 
 const TBResult = (props = {}) => {
   const {editorOptions, result} = props;
+  let {mode}  = props;
+  if (!mode) {
+     mode = 'json';
+   }
+  console.log(mode);
   const options = Object.assign({
     $blockScrolling: Infinity,
     showLineNumbers: true,
@@ -14,7 +20,7 @@ const TBResult = (props = {}) => {
   return (
     <div className="tb__editor response">
       <AceEditor
-      mode="text"
+      mode={mode}
       theme="terminal"
       name="tb-result"
       readOnly
@@ -29,7 +35,8 @@ const TBResult = (props = {}) => {
 
 TBResult.propTypes = {
   editorOptions: PropTypes.object,
-  result: PropTypes.string.isRequired
+  result: PropTypes.string.isRequired,
+  mode: PropTypes.string.isRequired,
 };
 
 export default TBResult;
