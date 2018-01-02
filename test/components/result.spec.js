@@ -25,4 +25,17 @@ describe('TBResult', () => {
     expect(editor.props().value).toEqual(content);
   });
 
+  it('should render mode prop', () => {
+    const mode = 'mode';
+    const result = shallow(<TBResult mode={mode} />);
+    const editor = result.childAt(0);
+    expect(editor.props().mode).toEqual(mode);
+  });
+
+  it('should render mode "json"', () => {
+    const result = shallow(<TBResult />);
+    const editor = result.childAt(0);
+    expect(editor.props().mode).toEqual('json');
+  });
+
 });

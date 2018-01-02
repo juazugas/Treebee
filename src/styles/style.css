@@ -57,3 +57,6 @@ html,body {
 .tb__editor.response {
   flex:1;
 }
+.ace_editor {
+  font-size: 13px!important;
+}

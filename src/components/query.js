@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 // import 'brace/mode/json';
 import '../editor/mode-sense';
-import 'brace/theme/github';
+import 'brace/theme/textmate';
 
 class TBQuery extends Component {
   constructor(props) {
