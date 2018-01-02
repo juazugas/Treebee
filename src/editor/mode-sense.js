@@ -1,5 +1,6 @@
 import ace from 'brace';
 
+/* eslint-disable */
 ace.define("ace/mode/sense_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(acequire, exports, module) {
 "use strict";
 
@@ -316,6 +317,6 @@ oop.inherits(Mode, TextMode);
 
     this.$id = "ace/mode/sense";
 }).call(Mode.prototype);
-
+/* eslint-enable */
 exports.Mode = Mode;
 });

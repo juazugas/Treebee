@@ -11,7 +11,6 @@ const TBResult = (props = {}) => {
   if (!mode) {
      mode = 'json';
    }
-  console.log(mode);
   const options = Object.assign({
     $blockScrolling: Infinity,
     showLineNumbers: true,
