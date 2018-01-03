@@ -28,7 +28,7 @@ class TBQueryProcess extends Component {
       <div className="tb__editor process">
         <AceEditor
         mode="javascript"
-        theme="github"
+        theme="textmate"
         name="tb-process"
         value={this.state.value}
         onChange={this.onChangeProcess}

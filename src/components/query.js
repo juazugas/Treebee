@@ -32,7 +32,7 @@ class TBQuery extends Component {
       <div className="tb__editor query">
         <AceEditor
         mode="sense"
-        theme="github"
+        theme="textmate"
         name="tb-query"
         value={this.state.value}
         width="100%"
