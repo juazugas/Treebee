@@ -29,6 +29,19 @@ export default class TBRequest {
     this.host = '';
   }
 
+  fetchQuery (host,query) {
+    if(this.parseHost(host) && this.parseQuery(query)) {
+      return this.sendQuery();
+    } else {
+      const promise = Promise.reject({
+        error: true,
+        message: this.errorMessage
+      });
+      this.errorMessage = '';
+      return promise;
+    }
+  }
+
   fetch (host,query,process) {
     let promise;
     if(this.parseHost(host) && this.parseQuery(query) && this.parseProcess(process)) {
@@ -76,6 +89,32 @@ export default class TBRequest {
   parseProcess (process = '') {
     this.process = process.trim();
     return true;
+  }
+
+  sendQuery () {
+    let query = {
+      method: 'POST',
+      url: this.host+this.queryAction.replace(/^(POST|GET)/, '').trim(),
+      data: this.queryDSL
+    };
+    return axios.post('/api/query', query);
+  }
+
+  processQuery(process, data) {
+    let promise;
+    if(this.parseProcess(process) && data) {
+      let result = (null!=this.process&&''!==this.process) ? this.processResponse(data) : data;
+      return Promise.resolve({
+        data: this.printResponse(result)
+      });
+    } else {
+      const promise = Promise.reject({
+        error: true,
+        message: this.errorMessage
+      });
+      this.errorMessage = '';
+      return promise;
+    }
   }
 
   submitQuery () {

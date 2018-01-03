@@ -11,8 +11,16 @@ describe('actions/index', () => {
     expect(actions.UPDATE_PROCESS).toBeDefined();
   });
 
-  it('should export PERFORM_QUERY', () => {
-    expect(actions.PERFORM_QUERY).toBeDefined();
+  it('should export QUERY_ELASTIC', () => {
+    expect(actions.QUERY_ELASTIC).toBeDefined();
+  });
+
+  it('should export QUERY_PROCESS', () => {
+    expect(actions.QUERY_PROCESS).toBeDefined();
+  });
+
+  it('should export QUERY_ERROR', () => {
+    expect(actions.QUERY_ERROR).toBeDefined();
   });
 
   it('should export updateQuery action', () => {

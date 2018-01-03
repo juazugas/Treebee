@@ -66,6 +66,49 @@ describe('TBRequest', () => {
     });
   });
 
+  it('should fetch query', (done) => {
+    let request = new TBRequest();
+    request.fetchQuery(host, query);
+
+    moxios.wait(function () {
+      let request = moxios.requests.mostRecent()
+      request.respondWith({
+        status: 200,
+        response: 'performed query.'
+      })
+      .then((response) => {
+        expect(response).toBeDefined();
+        expect(response.data).toEqual('performed query.');
+        done();
+      })
+      .catch(done);
+    });
+  });
+
+  it('should process query', done => {
+    let request = new TBRequest();
+    request.processQuery('response.ok', {ok: true})
+    .then(data => {
+      expect(data.data).toBeDefined();
+      expect(data.data).toBe("true");
+      done();
+    })
+    .catch(done);
+  });
+
+  it('should reject process query', done => {
+    let request = new TBRequest();
+    request.processQuery('response', undefined)
+    .then(done)
+    .catch(error => {
+      expect(error).toBeDefined();
+      expect(error.error).toBe(true);
+      done();
+    })
+    .catch(done);
+  });
+
+
   it('should process response', () => {
     let request = new TBRequest();
     request.parseProcess('response.took;');

@@ -35,7 +35,7 @@ const TBResult = (props = {}) => {
 TBResult.propTypes = {
   editorOptions: PropTypes.object,
   result: PropTypes.string.isRequired,
-  mode: PropTypes.string.isRequired,
+  mode: PropTypes.string,
 };
 
 export default TBResult;
