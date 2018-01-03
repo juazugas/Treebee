@@ -15,10 +15,10 @@ export default function resultReducer (state = '', action) {
     case `${QUERY_ELASTIC}/PENDING` :
       return 'performing query.';
     case `${QUERY_PROCESS}/${PENDING}` :
-      return 'performing query.';
+      return 'processing query.';
     case `${QUERY_PROCESS}/${FULFILLED}` :
       return action.payload.data;
-    case `${QUERY_ERROR}` :
+    case QUERY_ERROR :
     case `${QUERY_PROCESS}/${REJECTED}` :
       return formatRejectQuery(action.payload);
   }

@@ -7,7 +7,6 @@ export function performQuery (server, query, process) {
     request.fetchQuery(server, query)
     .then(response => {
       let {data}  = response;
-      console.log(response);
       dispatch({ type: QUERY_ELASTIC, payload: data });
       dispatch({
         type: QUERY_PROCESS,
@@ -15,7 +14,6 @@ export function performQuery (server, query, process) {
       });
     })
     .catch(error => {
-      console.log(error);
       return dispatch({type: QUERY_ERROR, payload: error})
     });
     return dispatch({type:`${QUERY_ELASTIC}/PENDING`});
