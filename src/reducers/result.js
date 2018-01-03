@@ -1,4 +1,4 @@
-import { PERFORM_QUERY } from '../actions';
+import { QUERY_PROCESS, QUERY_ELASTIC, QUERY_ERROR } from '../actions';
 import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
 
 const formatRejectQuery = payload => {
@@ -12,11 +12,14 @@ const formatRejectQuery = payload => {
 
 export default function resultReducer (state = '', action) {
   switch (action.type) {
-    case `${PERFORM_QUERY}/${PENDING}` :
+    case `${QUERY_ELASTIC}/PENDING` :
       return 'performing query.';
-    case `${PERFORM_QUERY}/${FULFILLED}` :
+    case `${QUERY_PROCESS}/${PENDING}` :
+      return 'performing query.';
+    case `${QUERY_PROCESS}/${FULFILLED}` :
       return action.payload.data;
-    case `${PERFORM_QUERY}/${REJECTED}` :
+    case `${QUERY_ERROR}` :
+    case `${QUERY_PROCESS}/${REJECTED}` :
       return formatRejectQuery(action.payload);
   }
   return state;
