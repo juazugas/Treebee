@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 import 'brace/theme/terminal';
 import 'brace/mode/json';
 import 'brace/mode/text';
 
-const TBResult = (props = {}) => {
+export const TBResult = (props = {}) => {
   const {editorOptions, result} = props;
   let {mode}  = props;
   if (!mode) {
@@ -38,4 +39,10 @@ TBResult.propTypes = {
   mode: PropTypes.string,
 };
 
-export default TBResult;
+const mapStateToProps = state => {
+  return {
+    result: state.result,
+  };
+};
+
+export default connect(mapStateToProps)(TBResult);

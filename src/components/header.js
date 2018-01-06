@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { performQuery } from '../actions';
 
-class TBHeader extends Component {
+export class TBHeader extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      server: '',
-      performQuery: props.performQuery
+      server: ''
     };
     this.onServerChange = this.onServerChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -20,7 +21,7 @@ class TBHeader extends Component {
   }
 
   handleClick (e) {
-    this.state.performQuery(this.state.server);
+    this.props.performQuery(this.state.server);
   }
 
   render() {
@@ -45,5 +46,10 @@ TBHeader.propTypes = {
   performQuery: PropTypes.func.isRequired
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    performQuery: (server) => dispatch(performQuery(server)),
+  };
+};
 
-export default TBHeader;
+export default connect(null, mapDispatchToProps)(TBHeader);

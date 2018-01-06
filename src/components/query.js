@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
-// import 'brace/mode/json';
-import '../editor/mode-sense';
 import 'brace/theme/textmate';
+import '../editor/mode-sense';
+import { updateQuery } from '../actions';
 
-class TBQuery extends Component {
+export class TBQuery extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -53,4 +54,10 @@ TBQuery.propTypes = {
   retrieveQuery: PropTypes.func.isRequired
 };
 
-export default TBQuery;
+const mapDispatchToProps = dispatch => {
+  return {
+    retrieveQuery: (query) => dispatch(updateQuery(query)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(TBQuery);

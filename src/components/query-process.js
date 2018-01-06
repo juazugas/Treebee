@@ -1,10 +1,12 @@
 import React,{Component} from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 import 'brace/mode/javascript';
 import 'brace/theme/textmate';
+import { updateProcess } from '../actions';
 
-class TBQueryProcess extends Component {
+export class TBQueryProcess extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,4 +51,10 @@ TBQueryProcess.propTypes = {
   retrieveProcess: PropTypes.func.isRequired,
 };
 
-export default TBQueryProcess;
+const mapDispatchToProps = dispatch => {
+  return {
+    retrieveProcess: (process) => dispatch(updateProcess(process)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(TBQueryProcess);
