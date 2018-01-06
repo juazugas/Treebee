@@ -1,13 +1,17 @@
 import expect from 'expect';
 import React from 'react';
-import {mount, shallow} from 'enzyme';
+import { shallow } from 'enzyme';
 import brace from 'brace';
-import TBQuery from '../../src/components/query';
+import { TBQuery } from '../../src/components/query';
 
 describe('TBQuery', () => {
 
-  let testOptions = {
+  const testOptions = {
     '$useWorker': false
+  };
+
+  const defaultOptions = {
+    retrieveQuery: value => {}
   };
 
   it('should render a div', () => {

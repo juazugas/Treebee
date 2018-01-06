@@ -1,9 +1,9 @@
 import expect from 'expect';
 import React from 'react';
 import {mount, shallow} from 'enzyme';
-import TBHeader from '../../src/components/header';
+import { TBHeader } from '../../src/components/header';
 
-function setup(props = {}) {
+function setup(props = {performQuery: ()=>{}}) {
   return shallow(<TBHeader {...props} />);
 }
 

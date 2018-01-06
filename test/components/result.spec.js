@@ -1,7 +1,7 @@
 import expect from 'expect';
 import React from 'react';
-import {mount, shallow} from 'enzyme';
-import TBResult from '../../src/components/result';
+import { shallow } from 'enzyme';
+import { TBResult } from '../../src/components/result';
 
 describe('TBResult', () => {
 

@@ -1,21 +1,24 @@
 import expect from 'expect';
 import React from 'react';
-import {mount, shallow} from 'enzyme';
-import TBQueryProcess from '../../src/components/query-process';
+import { shallow } from 'enzyme';
+import { TBQueryProcess } from '../../src/components/query-process';
 
 describe('TBQueryProcess', () => {
 
-  beforeEach(() => {
-  });
+  const defaultProps = {
+    editorOptions: {},
+    retrieveProcess: () => {},
+  };
 
   it('should render a div', () => {
-    const process = shallow(<TBQueryProcess />);
+    const process = shallow(<TBQueryProcess {...defaultProps} />);
     expect(process.first().exists()).toBeTruthy();
   });
 
   it('should render Ace editor', () => {
     const options = { 'test' : 1};
-    const process = shallow(<TBQueryProcess editorOptions={options} />);
+    defaultProps.editorOptions = options;
+    const process = shallow(<TBQueryProcess {...defaultProps} />);
     const editor = process.childAt(0);
     expect(editor.text()).toEqual('<ReactAce />');
     expect(editor.props().editorProps.test).toBe(1);
@@ -28,7 +31,8 @@ describe('TBQueryProcess', () => {
     };
     const process = shallow(
       <TBQueryProcess
-        retrieveProcess={retrieveProcess}
+      editorOptions=""
+      retrieveProcess={retrieveProcess}
       />);
     const aceEditor = process.childAt(0);
     expect(aceEditor.props().value).toEqual('');

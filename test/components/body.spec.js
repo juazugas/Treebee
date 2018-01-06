@@ -1,6 +1,6 @@
 import expect from 'expect';
 import React from 'react';
-import {mount, shallow} from 'enzyme';
+import {shallow} from 'enzyme';
 import TBBody from '../../src/components/body';
 
 function setup(props = {}) {
@@ -8,30 +8,28 @@ function setup(props = {}) {
 }
 
 describe('TBBody', () => {
-  it('should render a new row', () => {
-    const body = setup();
-    expect(body.first().props().className).toEqual('tb__main');
+
+  let body;
+  beforeEach(() =>{
+    body = setup();
+  });
+
+  it('should render a new section and two columns', () => {
+    expect(body.first().hasClass('tb__main')).toBeTruthy();
+    expect(body.children().first().props().className).toEqual('tb__container-query');
+    expect(body.children().last().props().className).toEqual('tb__container-response');
   });
 
   it('should render the query editor', () => {
-    const retrieveQuery = () => {};
-    const body = setup({retrieveQuery});
-    expect(body.find('TBQuery').exists()).toBeTruthy();
-    expect(body.find('TBQuery').props().retrieveQuery).toEqual(retrieveQuery);
+    expect(body.find('Connect(TBQuery)').exists()).toBeTruthy();
   });
 
   it('should render the process editor', () => {
-    const retrieveProcess = () => {};
-    const body = setup({retrieveProcess});
-    expect(body.find('TBQueryProcess').exists()).toBeTruthy();
-    expect(body.find('TBQueryProcess').props().retrieveProcess).toEqual(retrieveProcess);
+    expect(body.find('Connect(TBQueryProcess)').exists()).toBeTruthy();
   });
 
   it('should render the process editor', () => {
-    const result = 'result';
-    const body = setup({result});
-    expect(body.find('TBResult').exists()).toBeTruthy();
-    expect(body.find('TBResult').props().result).toEqual(result);
+    expect(body.find('Connect(TBResult)').exists()).toBeTruthy();
   });
 
 });
