@@ -5,6 +5,12 @@ import {QUERY_ELASTIC, QUERY_PROCESS, QUERY_ERROR, performQuery} from '../../src
 
 describe('actions/request', () => {
 
+  const getState = () => {
+    return {
+      query: 'GET /_search\n{}',
+      process: '',
+    };
+  };
   beforeEach(function () {
     moxios.install();
   });
@@ -14,20 +20,18 @@ describe('actions/request', () => {
   });
 
   it('should return action correct type', done => {
-    const thunk = performQuery('server', 'query', 'process');
-    const action = thunk(action=>action);
+    const thunk = performQuery('server');
+    const action = thunk(action=>action, getState);
     expect(action.type).toEqual(`${QUERY_ELASTIC}/PENDING`);
     expect(action.payload).toBeUndefined();
     done();
   });
 
   it('should call dispatch with Promise', done => {
-    let query = 'GET /_search\n{}';
-    let process = '';
     let server = 'http://127.0.0.1:9200';
     const dispatch = sinon.spy();
-    const thunk = performQuery(server, query, process);
-    const action = thunk(dispatch);
+    const thunk = performQuery(server);
+    const action = thunk(dispatch, getState);
     moxios.wait(() => {
       let request = moxios.requests.mostRecent();
       request.respondWith({
@@ -50,12 +54,10 @@ describe('actions/request', () => {
   });
 
   it('should call dispatch with QUERY_ERROR', done => {
-    let query = 'GET /_search\n{}';
-    let process = '';
-    let server = 'http://127.0.0.1:9200';
+    const server = 'http://127.0.0.1:9200';
     const dispatch = sinon.spy();
-    const thunk = performQuery(server, query, process);
-    const action = thunk(dispatch);
+    const thunk = performQuery(server);
+    const action = thunk(dispatch, getState);
     moxios.wait(() => {
       let request = moxios.requests.mostRecent();
       request.respondWith({
