@@ -63,6 +63,16 @@ html,body {
 .tb__input.server {
   font-size: 1em;
 }
+.tb__item.server {
+  padding: 4px 2px;
+  font-size: 1em;
+  font-family: system-ui;
+  background-color: white;
+}
+.tb__item.server:hover {
+  background-color: lightblue;
+  color: white;
+}
 .tb__button.action {
   font-size: 1em;
   padding-top: 2px;

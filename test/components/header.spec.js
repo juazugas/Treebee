@@ -8,10 +8,11 @@ function setup(props = {performQuery: ()=>{}}) {
 }
 
 describe('TBHeader', () => {
-  it('should render server input', () => {
+  it('should render server autocomplete input', () => {
     const header = setup();
-    expect(header.find('input').length).toBe(1);
-    expect(header.find('input').props().type).toBe('text');
+    expect(header.find('Autocomplete').length).toBe(1);
+    expect(header.find('Autocomplete').props().onChange).toBe(header.instance().onServerChange);
+    expect(header.find('Autocomplete').props().renderItem).toBe(header.instance().renderItem);
   });
 
   it('should render action button', () => {
@@ -21,8 +22,8 @@ describe('TBHeader', () => {
 
   it("should control server input", () => {
     const header = setup();
-    header.find("input").simulate("change", { target: { value : 'a'} });
-    expect(header.find("input").props().value).toEqual("a");
+    header.find("Autocomplete").simulate("change", { target: { value : 'a'} });
+    expect(header.find("Autocomplete").props().value).toEqual("a");
   });
 
   it('should handle click', () => {
@@ -32,7 +33,7 @@ describe('TBHeader', () => {
     };
     const header = setup({performQuery});
     expect(header.find('button').props().onClick).toBeDefined();
-    header.find('input').simulate('change', {target: {value : 'server'}});
+    header.setState({server:'server'});
     header.find('button').simulate('click');
     expect(server).toEqual('server');
   });

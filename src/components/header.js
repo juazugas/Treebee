@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Autocomplete from 'react-autocomplete';
 import { performQuery } from '../actions';
 
 export class TBHeader extends Component {
@@ -8,33 +9,79 @@ export class TBHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      server: ''
+      server: '',
+      servers: [
+        'http://127.0.0.1:9200',
+        'http://elastic.co:9200',
+      ],
     };
-    this.onServerChange = this.onServerChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.setServer = this.setServer.bind(this);
+    this.onServerChange = this.onServerChange.bind(this);
+    this.getServers = this.getServers.bind(this);
   }
 
   onServerChange(event) {
-    this.setState({
-      server: event.target.value
-    });
+    this.setServer(event.target.value);
   }
 
-  handleClick (e) {
-    this.props.performQuery(this.state.server);
+  setServer(server) {
+    this.setState({ server });
+  }
+
+  getServers () {
+    return this.state.servers;
+    /*this.state.servers.filter((server) => {
+      return this.state.server != server;
+    }); */
+  }
+
+  handleClick () {
+    console.log(this.state);
+      this.props.performQuery(this.state.server);
+      this.setState({
+        servers : [...this.state.servers, this.state.server]
+      });
+    if (this.state.server!=='') {
+    }
+  }
+
+  renderItem (server) {
+    return (
+      <div
+      className="tb__item server"
+      key={server}>
+        {server}
+      </div>
+    );
+  }
+
+  getItemValue(server) {
+    return server;
   }
 
   render() {
+    const inputProps = {
+      placeholder:'http://...:9200',
+      size:40,
+      className: 'tb__input server',
+    };
+
     return (
       <header className="tb__header">
-        <input type="text" size="40" name="server"
+        <Autocomplete
+        wrapperStyle={{display:'inline-block', zIndex:10000, position:'relative'}}
         value={this.state.server}
+        inputProps={inputProps}
         onChange={this.onServerChange}
-        placeholder="http://...:9200"
-        className="tb__input server" />
+        items={this.state.servers}
+        getItemValue={this.getItemValue}
+        renderItem={this.renderItem}
+        onSelect={this.setServer}
+        />
         <button
         onClick={this.handleClick}
-          className="tb__button action">
+        className="tb__button action">
           Go
         </button>
       </header>
