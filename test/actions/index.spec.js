@@ -23,6 +23,10 @@ describe('actions/index', () => {
     expect(actions.QUERY_ERROR).toBeDefined();
   });
 
+  it('should export SERVER_ADD', () => {
+    expect(actions.SERVER_ADD).toBeDefined();
+  })
+
   it('should export updateQuery action', () => {
     expect(actions.updateQuery).toBeDefined();
   });
@@ -33,6 +37,10 @@ describe('actions/index', () => {
 
   it('should export performQuery action', () => {
     expect(actions.performQuery).toBeDefined();
+  });
+
+  it('should export saveServer action', () => {
+    expect(actions.saveServer).toBeDefined();
   });
 
 });

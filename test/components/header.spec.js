@@ -1,4 +1,5 @@
 import expect from 'expect';
+import sinon from 'sinon';
 import React from 'react';
 import {mount, shallow} from 'enzyme';
 import { TBHeader } from '../../src/components/header';
@@ -31,11 +32,13 @@ describe('TBHeader', () => {
     const performQuery = (s) => {
       server = s;
     };
-    const header = setup({performQuery});
+    const saveServer = sinon.spy();
+    const header = setup({performQuery,saveServer});
     expect(header.find('button').props().onClick).toBeDefined();
     header.setState({server:'server'});
     header.find('button').simulate('click');
     expect(server).toEqual('server');
+    expect(saveServer.calledWith('server')).toBeTruthy();
   });
 
 });

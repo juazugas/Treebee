@@ -2,23 +2,18 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Autocomplete from 'react-autocomplete';
-import { performQuery } from '../actions';
+import { saveServer, performQuery } from '../actions';
 
 export class TBHeader extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      server: '',
-      servers: [
-        'http://127.0.0.1:9200',
-        'http://elastic.co:9200',
-      ],
+      server: ''
     };
     this.handleClick = this.handleClick.bind(this);
     this.setServer = this.setServer.bind(this);
     this.onServerChange = this.onServerChange.bind(this);
-    this.getServers = this.getServers.bind(this);
   }
 
   onServerChange(event) {
@@ -29,20 +24,11 @@ export class TBHeader extends Component {
     this.setState({ server });
   }
 
-  getServers () {
-    return this.state.servers;
-    /*this.state.servers.filter((server) => {
-      return this.state.server != server;
-    }); */
-  }
-
   handleClick () {
-    console.log(this.state);
-      this.props.performQuery(this.state.server);
-      this.setState({
-        servers : [...this.state.servers, this.state.server]
-      });
-    if (this.state.server!=='') {
+    let {server} = this.state;
+    if (server!=='') {
+      this.props.performQuery(server);
+      this.props.saveServer(server);
     }
   }
 
@@ -60,24 +46,35 @@ export class TBHeader extends Component {
     return server;
   }
 
+  shouldItemRender (server, value) {
+    return (
+      server.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+
   render() {
     const inputProps = {
       placeholder:'http://...:9200',
-      size:40,
-      className: 'tb__input server',
+      size:40, className: 'tb__input server',
+    };
+    const wrapperStyle = {
+      display:'inline-block',
+      zIndex:10000,
+      position:'relative'
     };
 
     return (
       <header className="tb__header">
         <Autocomplete
-        wrapperStyle={{display:'inline-block', zIndex:10000, position:'relative'}}
+        wrapperStyle={wrapperStyle}
         value={this.state.server}
         inputProps={inputProps}
         onChange={this.onServerChange}
-        items={this.state.servers}
+        items={this.props.servers}
         getItemValue={this.getItemValue}
         renderItem={this.renderItem}
         onSelect={this.setServer}
+        shouldItemRender={this.shouldItemRender}
         />
         <button
         onClick={this.handleClick}
@@ -90,13 +87,22 @@ export class TBHeader extends Component {
 }
 
 TBHeader.propTypes = {
-  performQuery: PropTypes.func.isRequired
+  performQuery: PropTypes.func.isRequired,
+  saveServer: PropTypes.func.isRequired,
+  servers: PropTypes.array.isRequired,
+};
+
+const mapStateToProps = state => {
+  return {
+    servers: state.servers,
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     performQuery: (server) => dispatch(performQuery(server)),
+    saveServer: (server) => dispatch(saveServer(server)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(TBHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(TBHeader);

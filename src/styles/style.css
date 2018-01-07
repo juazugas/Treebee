@@ -69,9 +69,9 @@ html,body {
   font-family: system-ui;
   background-color: white;
 }
+.tb__item.server.preselect,
 .tb__item.server:hover {
-  background-color: lightblue;
-  color: white;
+  background-color: aliceblue;
 }
 .tb__button.action {
   font-size: 1em;
