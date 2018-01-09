@@ -13,4 +13,8 @@ const rootReducer = combineReducers({
   servers: serversReducer,
 });
 
+export const persistPaths = [
+  'query', 'process', 'servers'
+];
+
 export default rootReducer;

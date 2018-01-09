@@ -1,10 +1,14 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 import thunkMiddleware from 'redux-thunk';
-import rootReducer from './reducers';
+import rootReducer, { persistPaths } from './reducers';
+import persistState from 'redux-localstorage';
 
+const key = 'Treebee::last-state';
 const initialState = {};
-const enhancers = [];
+const enhancers = [
+  persistState(persistPaths, {key})
+];
 const middleware = [
   promiseMiddleware({
     promiseTypeDelimiter: '/'
