@@ -6,13 +6,17 @@ import 'brace/theme/textmate';
 import '../editor/mode-sense';
 import { updateQuery } from '../actions';
 
+const defaultProps = {
+  initialQuery:'',
+}
+
 export class TBQuery extends Component {
-  constructor(props) {
+  constructor(props = defaultProps) {
     super(props);
     this.state = {
       retrieveQuery: props.retrieveQuery,
       editorOptions: props.editorOptions,
-      value : ''
+      value : props.initialQuery,
     };
     this.onChangeQuery = this.onChangeQuery.bind(this);
   }
@@ -51,7 +55,14 @@ export class TBQuery extends Component {
 
 TBQuery.propTypes = {
   editorOptions: PropTypes.object,
-  retrieveQuery: PropTypes.func.isRequired
+  retrieveQuery: PropTypes.func.isRequired,
+  initialQuery: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => {
+  return {
+    initialQuery : state.query,
+  };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -60,4 +71,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(TBQuery);
+export default connect(mapStateToProps, mapDispatchToProps)(TBQuery);

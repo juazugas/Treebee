@@ -10,17 +10,19 @@ describe('TBQuery', () => {
     '$useWorker': false
   };
 
-  const defaultOptions = {
-    retrieveQuery: value => {}
+  const defaultProps = {
+    editorOptions: testOptions,
+    retrieveQuery: value => {},
+    initialQuery: '',
   };
 
   it('should render a div', () => {
-    const query = shallow(<TBQuery editorOptions={testOptions} />);
+    const query = shallow(<TBQuery {...defaultProps} />);
     expect(query.first().exists()).toBeTruthy();
   });
 
   it('should render Ace editor', () => {
-    const query = shallow(<TBQuery editorOptions={testOptions} />);
+    const query = shallow(<TBQuery {...defaultProps} />);
     const editor = query.childAt(0);
     expect(editor.text()).toEqual('<ReactAce />');
     expect(editor.props().editorProps.$useWorker).toBeFalsy();
@@ -40,6 +42,12 @@ describe('TBQuery', () => {
     expect(aceEditor.props().value).toEqual('');
     aceEditor.simulate("change", 'a');
     expect(q).toEqual('a');
+  });
+
+  it('should init query value from query property', () => {
+    const initialQuery = 'query';
+    const query = shallow(<TBQuery {...defaultProps} initialQuery={initialQuery} />);
+    expect(query.state().value).toBe(initialQuery);
   });
 
 });

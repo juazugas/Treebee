@@ -8,6 +8,7 @@ describe('TBQueryProcess', () => {
   const defaultProps = {
     editorOptions: {},
     retrieveProcess: () => {},
+    initialProcess: '',
   };
 
   it('should render a div', () => {
@@ -33,11 +34,19 @@ describe('TBQueryProcess', () => {
       <TBQueryProcess
       editorOptions=""
       retrieveProcess={retrieveProcess}
+      initialProcess=""
       />);
     const aceEditor = process.childAt(0);
     expect(aceEditor.props().value).toEqual('');
     aceEditor.simulate("change", 'a');
     expect(p).toEqual('a');
+  });
+
+  it('should init query process value from process property', () => {
+    const initialProcess = 'process';
+    defaultProps.initialProcess = initialProcess;
+    const process = shallow(<TBQueryProcess {...defaultProps} initialProcess={initialProcess} />);
+    expect(process.state().value).toBe(initialProcess);
   });
 
 });

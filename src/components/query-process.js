@@ -6,13 +6,17 @@ import 'brace/mode/javascript';
 import 'brace/theme/textmate';
 import { updateProcess } from '../actions';
 
+const defaultProps = {
+  initialProcess: '',
+}
+
 export class TBQueryProcess extends Component {
-  constructor(props) {
+  constructor(props = defaultProps) {
     super(props);
     this.state = {
       editorOptions: props.editorOptions,
       retrieveProcess: props.retrieveProcess,
-      value : ''
+      value : props.initialProcess,
     };
     this.onChangeProcess = this.onChangeProcess.bind(this);
   }
@@ -49,6 +53,13 @@ export class TBQueryProcess extends Component {
 TBQueryProcess.propTypes = {
   editorOptions: PropTypes.object,
   retrieveProcess: PropTypes.func.isRequired,
+  initialProcess: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => {
+  return {
+    initialProcess: state.process,
+  };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -57,4 +68,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(TBQueryProcess);
+export default connect(mapStateToProps, mapDispatchToProps)(TBQueryProcess);

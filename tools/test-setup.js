@@ -28,6 +28,7 @@ var exposedProperties = ['window', 'navigator', 'document'];
 
 global.window =  new JSDOM('<html><body><div id="app"></div></body></html>').window;
 
+global.window.localStorage = {};
 global.window.URL = URL;
 global.window.Blob = blobUtil.Blob;
 global.window.BlobBuilder = blobUtil.BlobBuilder;
