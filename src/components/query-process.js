@@ -8,7 +8,7 @@ import { updateProcess } from '../actions';
 
 const defaultProps = {
   initialProcess: '',
-}
+};
 
 export class TBQueryProcess extends Component {
   constructor(props = defaultProps) {

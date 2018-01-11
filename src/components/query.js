@@ -8,7 +8,7 @@ import { updateQuery } from '../actions';
 
 const defaultProps = {
   initialQuery:'',
-}
+};
 
 export class TBQuery extends Component {
   constructor(props = defaultProps) {
